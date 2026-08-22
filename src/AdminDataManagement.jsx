@@ -1,103 +1,100 @@
-import React, { useState } from 'react';
-import './AdminDataManagement.css';
+import React, { useState } from 'react'
+import './AdminDataManagement.css'
+import { PlusCircle, Trash2, Edit, Database } from 'lucide-react'
 
-export default function AdminDataManagement() {
-  const [scholarships, setScholarships] = useState([
-    { id: 1, title: 'Fulbright Scholarship', country: 'USA', status: 'Verified' },
-    { id: 2, title: 'DAAD Scholarship', country: 'Germany', status: 'Pending' },
-  ]);
+const AdminDataManagement = () => {
+  const [title, setTitle] = useState('')
+  const [country, setCountry] = useState('')
 
-  const [title, setTitle] = useState('');
-  const [country, setCountry] = useState('');
-
-  // Add Listing
   const handleAdd = (e) => {
-    e.preventDefault();
-    if (!title || !country) return;
-    const newItem = {
-      id: Date.now(),
-      title: title,
-      country: country,
-      status: 'Pending',
-    };
-    setScholarships([...scholarships, newItem]);
-    setTitle('');
-    setCountry('');
-  };
-
-  // Delete Listing
-  const handleDelete = (id) => {
-    setScholarships(scholarships.filter((item) => item.id !== id));
-  };
-
-  // Verify Listing
-  const handleVerify = (id) => {
-    setScholarships(
-      scholarships.map((item) =>
-        item.id === id ? { ...item, status: 'Verified' } : item
-      )
-    );
-  };
+    e.preventDefault()
+    alert('Scholarship Added Successfully!')
+    setTitle('')
+    setCountry('')
+  }
 
   return (
-    <div className="admin-page">
-      <h2>Admin Data Management</h2>
-      <p className="page-subtitle">Add, edit, delete, and verify scholarship listings.</p>
-
-      {/* Add Form */}
-      <form onSubmit={handleAdd} className="crud-form">
-        <h3>Add New Scholarship</h3>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Scholarship Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Country"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-          />
-          <button type="submit" className="btn btn-primary">Add Listing</button>
+    <div className='user-container'>
+      
+      {/* Form Card */}
+      <div className="graph-card">
+        <div className="form-title">
+          <Database size={18} />
+          <h4>Add New Scholarship</h4>
         </div>
-      </form>
+        <form onSubmit={handleAdd} className="custom-form">
+          <div className="input-field">
+            <label>Scholarship Name</label>
+            <input 
+              type="text" 
+              placeholder="e.g. Fulbright Scholarship" 
+              value={title} 
+              onChange={(e) => setTitle(e.target.value)} 
+            />
+          </div>
+          <div className="input-field">
+            <label>Country</label>
+            <input 
+              type="text" 
+              placeholder="e.g. USA" 
+              value={country} 
+              onChange={(e) => setCountry(e.target.value)} 
+            />
+          </div>
+          <button type="submit" className="submit-btn">
+            <PlusCircle size={15}/> Add Scholarship
+          </button>
+        </form>
+      </div>
 
-      {/* Scholarship Table */}
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Country</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {scholarships.map((item) => (
-            <tr key={item.id}>
-              <td>{item.title}</td>
-              <td>{item.country}</td>
+      {/* Table Card */}
+      <div className="graph-card">
+        <div className="card-header">
+          <h4>Existing Scholarships</h4>
+        </div>
+        <table className="custom-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Scholarship Name</th>
+              <th>Country</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#101</td>
+              <td>Fulbright Scholarship</td>
+              <td>USA</td>
               <td>
-                <span className={`status-tag ${item.status.toLowerCase()}`}>
-                  {item.status}
-                </span>
-              </td>
-              <td>
-                {item.status === 'Pending' && (
-                  <button onClick={() => handleVerify(item.id)} className="btn btn-action">
-                    Verify
-                  </button>
-                )}
-                <button onClick={() => handleDelete(item.id)} className="btn btn-danger">
-                  Delete
-                </button>
+                <button className="icon-action-btn"><Edit size={14}/></button>
+                <button className="icon-action-btn delete"><Trash2 size={14}/></button>
               </td>
             </tr>
-          ))}
-        </tbody>
-      </table>
+            <tr>
+              <td>#102</td>
+              <td>Chevening Scholarship</td>
+              <td>UK</td>
+              <td>
+                <button className="icon-action-btn"><Edit size={14}/></button>
+                <button className="icon-action-btn delete"><Trash2 size={14}/></button>
+              </td>
+            </tr>
+            <tr>
+              <td>#103</td>
+              <td>DAAD Scholarship</td>
+              <td>Germany</td>
+              <td>
+                <button className="icon-action-btn"><Edit size={14}/></button>
+                <button className="icon-action-btn delete"><Trash2 size={14}/></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
-  );
+  )
 }
+
+export default AdminDataManagement

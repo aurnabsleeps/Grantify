@@ -1,65 +1,78 @@
-import React, { useState } from 'react';
-import './AdminUserManagement.css';
+import React from 'react'
+import './AdminUserManagement.css'
+import { Trash2 } from 'lucide-react'
 
-export default function AdminUserManagement() {
-  const [users, setUsers] = useState([
-    { id: 1, name: 'Rahim Ahmed', email: 'rahim@gmail.com', role: 'Student' },
-    { id: 2, name: 'Karim Chowdhury', email: 'karim@gmail.com', role: 'Moderator' },
-    { id: 3, name: 'Sultana Begum', email: 'sultana@gmail.com', role: 'Student' },
-  ]);
-
-  const toggleRole = (id) => {
-    setUsers(
-      users.map((user) => {
-        if (user.id === id) {
-          return {
-            ...user,
-            role: user.role === 'Student' ? 'Moderator' : 'Student',
-          };
-        }
-        return user;
-      })
-    );
-  };
-
+const AdminUserManagement = () => {
   return (
-    <div className="admin-page">
-      <h2>Admin User Management</h2>
-      <p className="page-subtitle">Manage student accounts, roles, and access controls.</p>
+    <div className='user-container'>
+      
+      <div className="graph-card">
+        <div className="card-header">
+          <h4>User Management</h4>
+          <p className="sub-heading">Manage registered students and admins</p>
+        </div>
 
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Access Control</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
+        <table className="custom-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
               <td>
-                <span className={`role-badge ${user.role.toLowerCase()}`}>
-                  {user.role}
-                </span>
+                <div className="user-badge-cell">
+                  <div className="avatar">RA</div>
+                  <span>Rahim Ahmed</span>
+                </div>
               </td>
+              <td>rahim@gmail.com</td>
+              <td><span className="badge admin">Admin</span></td>
+              <td><span className="badge active">Active</span></td>
               <td>
-                <button
-                  onClick={() => toggleRole(user.id)}
-                  className="btn btn-role"
-                >
-                  Make {user.role === 'Student' ? 'Moderator' : 'Student'}
-                </button>
+                <button className="del-btn"><Trash2 size={13}/> Delete</button>
               </td>
             </tr>
-          ))}
-        </tbody>
-      </table>
+
+            <tr>
+              <td>
+                <div className="user-badge-cell">
+                  <div className="avatar">SK</div>
+                  <span>Sumaiya Khan</span>
+                </div>
+              </td>
+              <td>sumaiya@gmail.com</td>
+              <td><span className="badge student">Student</span></td>
+              <td><span className="badge active">Active</span></td>
+              <td>
+                <button className="del-btn"><Trash2 size={13}/> Delete</button>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div className="user-badge-cell">
+                  <div className="avatar">TC</div>
+                  <span>Tanvir Chowdhury</span>
+                </div>
+              </td>
+              <td>tanvir@gmail.com</td>
+              <td><span className="badge student">Student</span></td>
+              <td><span className="badge inactive">Inactive</span></td>
+              <td>
+                <button className="del-btn"><Trash2 size={13}/> Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
-  );
+  )
 }
+
+export default AdminUserManagement

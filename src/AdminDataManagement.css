@@ -1,86 +1,80 @@
-.crud-form {
-  border: 1px solid var(--border);
-  padding: 16px;
-  border-radius: 8px;
-  margin-bottom: 24px;
-}
-
-.crud-form h3 {
-  margin: 0 0 12px 0;
-  font-size: 18px;
-}
-
-.form-group {
+.form-title {
   display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: #0f172a;
+}
+
+.form-title h4 {
+  margin: 0;
+}
+
+.custom-form {
+  display: flex;
+  flex-direction: column;
   gap: 12px;
 }
 
-.form-group input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--bg);
-  color: var(--text-h);
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.admin-table {
+.input-field label {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.input-field input {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  outline: none;
+}
+
+.submit-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: fit-content;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.custom-table {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid var(--border);
-}
-
-.admin-table th,
-.admin-table td {
-  padding: 12px;
-  border-bottom: 1px solid var(--border);
   text-align: left;
 }
 
-.admin-table th {
-  background: var(--code-bg);
-  color: var(--text-h);
-}
-
-.status-tag {
-  padding: 4px 8px;
-  border-radius: 4px;
+.custom-table th, .custom-table td {
+  padding: 10px;
+  border-bottom: 1px solid #f1f5f9;
   font-size: 13px;
-  font-weight: 500;
 }
 
-.status-tag.verified {
-  background: rgba(40, 167, 69, 0.15);
-  color: #28a745;
+.custom-table th {
+  color: #64748b;
+  font-weight: 600;
+  background-color: #f8fafc;
 }
 
-.status-tag.pending {
-  background: rgba(255, 193, 7, 0.15);
-  color: #ffc107;
-}
-
-.btn {
-  padding: 6px 12px;
+.icon-action-btn {
+  background: transparent;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  color: #2563eb;
+  padding: 4px;
 }
 
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-}
-
-.btn-action {
-  background: var(--social-bg);
-  color: var(--text-h);
-  border: 1px solid var(--border);
-  margin-right: 8px;
-}
-
-.btn-danger {
-  background: rgba(220, 53, 69, 0.15);
-  color: #dc3545;
-  border: 1px solid rgba(220, 53, 69, 0.3);
+.icon-action-btn.delete {
+  color: #ef4444;
 }
