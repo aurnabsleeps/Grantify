@@ -1,22 +1,48 @@
+import { Link } from "react-router-dom";
+
 const Header = () => {
   return (
     <header className="header">
-      
+
       <div className="logo">
         <span className="logo-icon">◉</span>
         <span>GRANTIFY</span>
       </div>
 
       <nav className="navbar">
-        <a href="#" className="active">Home</a>
-        <a href="#">Services</a>
-        <a href="#">About Us</a>
-        <a href="#">Case Studies</a>
-        <a href="#">Blog</a>
+
+        <Link to="/">
+          Home
+        </Link>
+
+        <Link to="/scholarships">
+          Scholarships
+        </Link>
+
+        <Link to="/applicationtracker">
+          Application Tracker
+        </Link>
+
+        {/*<Link to="/about">
+          About Us
+        </Link>*/}
+
+        <Link to="/adminanalytics">
+          Admin Analytics
+        </Link>
+
+        <Link to="/admindatamanagement">
+          Admin Data Management
+        </Link>
+
+        <Link to="/adminusermanagement">
+          Admin User
+        </Link>
+
       </nav>
 
       <button className="contact-btn">
-        Contact
+        Log-in
       </button>
 
     </header>

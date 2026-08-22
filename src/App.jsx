@@ -1,38 +1,27 @@
-import React, { useState } from 'react';
-import './App.css';
+import { Routes, Route } from "react-router-dom";
 
-// Friends' Components
-import Header from './components/Header/Header'; 
-import Home from './components/Home/Home';
+import Header from "./components/Header/Header";
+import Home from "./components/Home/Home";
+import Scholarship from "./components/Scholarship/Scholarship";
+import ApplicationTracker from "./components/ApplicationTracker/ApplicationTracker";
+import AdminAnalytics from "./AdminAnalytics";
+import AdminDataManagement from "./AdminDataManagement";
+import AdminUserManagement from "./AdminUserManagement";
 
-// Admin Components
-import AdminAnalytics from './AdminAnalytics';
-import AdminDataManagement from './AdminDataManagement';
-import AdminUserManagement from './AdminUserManagement';
+import "./App.css";
 
-function App() {
-  const [activeTab, setActiveTab] = useState('home');
-
+const App = () => {
   return (
-    <div id="root">
-      <Header />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/scholarships" element={<Scholarship />} />
+      <Route path="/applicationtracker" element={<ApplicationTracker />} />
 
-      {/* Navigation Bar */}
-      <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', padding: '15px', background: 'var(--code-bg)' }}>
-        <button className="counter" onClick={() => setActiveTab('home')} style={{ cursor: 'pointer' }}>Home</button>
-        <button className="counter" onClick={() => setActiveTab('analytics')} style={{ cursor: 'pointer' }}>Analytics</button>
-        <button className="counter" onClick={() => setActiveTab('data')} style={{ cursor: 'pointer' }}>Data Management</button>
-        <button className="counter" onClick={() => setActiveTab('users')} style={{ cursor: 'pointer' }}>User Management</button>
-      </div>
-
-      <main style={{ flexGrow: 1 }}>
-        {activeTab === 'home' && <Home />}
-        {activeTab === 'analytics' && <AdminAnalytics />}
-        {activeTab === 'data' && <AdminDataManagement />}
-        {activeTab === 'users' && <AdminUserManagement />}
-      </main>
-    </div>
+      <Route path="/adminanalytics" element={<AdminAnalytics />} />
+      <Route path="admindatamanagement" element={<AdminDataManagement />} />
+      <Route path="/adminusermanagement" element={<AdminUserManagement />} />
+    </Routes>
   );
-}
+};
 
 export default App;

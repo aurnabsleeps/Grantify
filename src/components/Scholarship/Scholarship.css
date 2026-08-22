@@ -1,0 +1,39 @@
+.scholarship-page {
+  min-height: 100vh;
+  background: #f7f7f5;
+}
+
+/* Hero */
+
+.scholarship-hero {
+  text-align: center;
+  padding: 80px 20px 50px;
+}
+
+.scholarship-hero h1 {
+  font-size: 52px;
+  font-weight: 600;
+  letter-spacing: -2px;
+  margin-bottom: 18px;
+}
+
+.scholarship-hero p {
+  max-width: 600px;
+  margin: 0 auto;
+  color: #777;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Scholarship cards container */
+
+.scholarship-list {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}

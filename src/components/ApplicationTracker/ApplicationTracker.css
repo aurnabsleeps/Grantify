@@ -1,0 +1,126 @@
+.tracker-page {
+  padding: 00px;
+  background-color: #f8f8f8;
+  min-height: 100vh;
+}
+
+.tracker-page h1 {
+  text-align: center;
+  font-size: 45px;
+  margin-bottom: 10px;
+}
+
+.tracker-page > p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 50px;
+}
+
+.tracker-stats {
+  display: flex;
+  gap: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.stat-card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  padding: 30px;
+  flex: 1;
+  text-align: center;
+}
+
+.stat-card h3 {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.stat-card strong {
+  font-size: 35px;
+}
+
+.applications {
+  max-width: 1200px;
+  margin: 50px auto 0;
+}
+
+.applications h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.application-card {
+  background-color: white;
+
+  border: 1px solid #ddd;
+  border-radius: 12px;
+
+  padding: 20px;
+
+  margin-bottom: 15px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.application-card h3 {
+  margin-bottom: 8px;
+}
+
+.application-card p {
+  color: #777;
+}
+
+.status {
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+.applied {
+  background-color: #e8f0ff;
+  color: #2454c6;
+}
+
+.pending {
+  background-color: #fff4d6;
+  color: #a06a00;
+}
+
+.accepted {
+  background-color: #e2f7e9;
+  color: #16803c;
+}
+
+.rejected {
+  background-color: #ffe5e5;
+  color: #c62828;
+}
+
+.applications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.add-button {
+  background-color: #111;
+  color: white;
+
+  border: none;
+  border-radius: 8px;
+
+  padding: 12px 20px;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: #f2643c;
+}
