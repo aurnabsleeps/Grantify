@@ -1,0 +1,26 @@
+.role-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.role-badge.student {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.role-badge.moderator {
+  background: rgba(0, 123, 255, 0.15);
+  color: #007bff;
+}
+
+.btn-role {
+  background: var(--code-bg);
+  color: var(--text-h);
+  border: 1px solid var(--border);
+}
+
+.btn-role:hover {
+  border-color: var(--accent);
+}
