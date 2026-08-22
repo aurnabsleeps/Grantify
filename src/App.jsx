@@ -1,10 +1,10 @@
-function App() {
-  return (
-    <div>
-      <h1>Grantify</h1>
-      <p>Find opportunities. Apply. Achieve.</p>
-    </div>
-  );
-}
+import Home from "./components/Home/Home";
+import "./App.css";
+const App =() => {
+return <div>
+    <Home/>
+</div>
+
+};
 
 export default App;
