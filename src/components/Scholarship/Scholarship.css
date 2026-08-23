@@ -37,3 +37,42 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
+
+/* Search and Filters */
+
+.scholarship-filters {
+  width: 90%;
+  max-width: 1200px;
+
+  margin: 0 auto 40px;
+
+  display: flex;
+
+  gap: 15px;
+}
+
+.scholarship-filters input {
+  flex: 1;
+
+  padding: 14px 16px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+}
+
+.scholarship-filters select {
+  padding: 14px 16px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 8px;
+
+  background-color: white;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}

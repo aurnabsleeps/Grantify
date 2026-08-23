@@ -19,7 +19,7 @@ const Header = () => {
           Scholarships
         </Link>
 
-        <Link to="/applicationtracker">
+        <Link to="/applications">
           Application Tracker
         </Link>
 
