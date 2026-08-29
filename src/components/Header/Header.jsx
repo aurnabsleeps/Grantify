@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
 
+
+
 const Header = () => {
   return (
     <header className="header">
-
       <div className="logo">
         <span className="logo-icon">◉</span>
         <span>GRANTIFY</span>
       </div>
 
       <nav className="navbar">
-
-        <Link to="/">
+        <Link to="/" className="active">
           Home
         </Link>
 
@@ -22,10 +22,6 @@ const Header = () => {
         <Link to="/applications">
           Application Tracker
         </Link>
-
-        {/*<Link to="/about">
-          About Us
-        </Link>*/}
 
         <Link to="/adminanalytics">
           Admin Analytics
@@ -38,13 +34,17 @@ const Header = () => {
         <Link to="/adminusermanagement">
           Admin User
         </Link>
-
       </nav>
 
-      <button className="contact-btn">
-        Log-in
-      </button>
+      <div className="header-buttons">
+        <Link to="/login" className="login-link">
+          Login
+        </Link>
 
+        <Link to="/register" className="contact-btn">
+          Register
+        </Link>
+      </div>
     </header>
   );
 };
