@@ -1,0 +1,92 @@
+.user-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+.more-details-card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.more-details-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.more-det-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.more-det-card-heading p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+.more-details-card h3 {
+  font-size: 22px;
+  margin: 4px 0;
+  color: #0f172a;
+}
+
+.more-details-card p {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.performance-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.graph-card, .progress-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.card-header h4 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #0f172a;
+}
+
+.analytics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.analytics-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.analytics-row p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 14px;
+  color: #334155;
+}
+
+.analytics-row span {
+  font-weight: 600;
+  color: #2563eb;
+}

@@ -1,32 +1,42 @@
 import { Link } from "react-router-dom";
 
+
+
 const Header = () => {
   return (
     <header className="header">
-
       <div className="logo">
         <span className="logo-icon">◉</span>
         <span>GRANTIFY</span>
       </div>
 
-      <nav className="home-navbar">
-
+      <nav className="navbar">
         <Link to="/" className="active">
           Home
         </Link>
 
-        <a href="#">Services</a>
+        <Link to="/scholarships">
+          Scholarships
+        </Link>
 
-        <a href="#">About Us</a>
+        <Link to="/applications">
+          Application Tracker
+        </Link>
 
-        <a href="#">Case Studies</a>
+        <Link to="/adminanalytics">
+          Admin Analytics
+        </Link>
 
-        <a href="#">Blog</a>
+        <Link to="/admindatamanagement">
+          Admin Data Management
+        </Link>
 
+        <Link to="/adminusermanagement">
+          Admin User
+        </Link>
       </nav>
 
       <div className="header-buttons">
-
         <Link to="/login" className="login-link">
           Login
         </Link>
@@ -34,12 +44,9 @@ const Header = () => {
         <Link to="/register" className="contact-btn">
           Register
         </Link>
-
       </div>
-
     </header>
   );
 };
 
 export default Header;
-
