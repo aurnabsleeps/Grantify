@@ -667,6 +667,65 @@ select {
 }
 
 
+.auth-navbar {
+  width: 100%;
+  height: 80px;
+  padding: 0 30px;
+
+  display: flex;
+  align-items: center;
+
+  background: #ffffff;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.auth-brand-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #4f9f70;
+  color: white;
+
+  border-radius: 12px;
+
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.auth-brand span {
+  font-size: 32px;
+  font-weight: 700;
+  color: #3f7f59;
+}
+
+@media (max-width: 800px) {
+  .auth-navbar {
+    height: 75px;
+    padding: 0 25px;
+  }
+
+  .auth-brand-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+  }
+
+  .auth-brand span {
+    font-size: 30px;
+  }
+}
+
+
 
 
 

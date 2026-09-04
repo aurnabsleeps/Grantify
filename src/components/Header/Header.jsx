@@ -10,7 +10,7 @@ const Header = () => {
         <span>GRANTIFY</span>
       </div>
 
-      <nav className="navbar">
+      <nav className="home-navbar">
         <Link to="/" className="active">
           Home
         </Link>
