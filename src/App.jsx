@@ -12,6 +12,11 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 
+import AdminLogin from "./pages/AdminLogin";
+import StudentLogin from "./pages/StudentLogin";
+import AdminRegister from "./pages/AdminRegister";
+import StudentRegister from "./pages/StudentRegister";
+
 import "./App.css";
 
 function App() {
@@ -37,7 +42,12 @@ function App() {
 
       {/* Authentication Pages */}
       <Route path="/login" element={<Login />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
+      <Route path="/student-login" element={<StudentLogin />} />
+
       <Route path="/register" element={<Register />} />
+      <Route path="/admin-register" element={<AdminRegister />} />
+      <Route path="/student-register" element={<StudentRegister />} />
 
       {/* Student Profile */}
       <Route path="/profile" element={<Profile />} />

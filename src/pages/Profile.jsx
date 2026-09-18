@@ -10,49 +10,74 @@ function Profile() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const loggedIn =
-      localStorage.getItem("grantifyLoggedIn") === "true";
+    const loggedIn = localStorage.getItem("grantifyLoggedIn");
+    const storedUser = localStorage.getItem("grantifyUser");
 
-    const storedUser =
-      localStorage.getItem("grantifyUser");
-
-    if (!loggedIn || !storedUser) {
-      navigate("/login");
+    if (loggedIn !== "true" || !storedUser) {
+      navigate("/student-login");
       return;
     }
 
-    setUser(JSON.parse(storedUser));
+    try {
+      setUser(JSON.parse(storedUser));
+    } catch (error) {
+      localStorage.removeItem("grantifyUser");
+      localStorage.removeItem("grantifyLoggedIn");
+      navigate("/student-login");
+    }
   }, [navigate]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
 
-    setUser((previous) => ({
-      ...previous,
+    setUser((previousUser) => ({
+      ...previousUser,
       [name]: value
     }));
+
+    setMessage("");
+  };
+
+  const handleEdit = () => {
+    setEditing(true);
+    setMessage("");
+  };
+
+  const handleCancel = () => {
+    const storedUser = localStorage.getItem("grantifyUser");
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+
+    setEditing(false);
+    setMessage("");
   };
 
   const handleSave = (event) => {
     event.preventDefault();
 
-    const updatedUser = {
-      ...user,
-      cgpa: Number(user.cgpa)
-    };
+    const cgpa = Number(user.cgpa);
 
-    localStorage.setItem(
-      "grantifyUser",
-      JSON.stringify(updatedUser)
-    );
+    if (user.cgpa !== "" && (cgpa < 0 || cgpa > 4)) {
+      setMessage("CGPA must be between 0 and 4.");
+      return;
+    }
 
-    setUser(updatedUser);
+    localStorage.setItem("grantifyUser", JSON.stringify(user));
+
     setEditing(false);
     setMessage("Profile updated successfully.");
+  };
 
-    setTimeout(() => {
-      setMessage("");
-    }, 2500);
+  const handleLogout = () => {
+    localStorage.removeItem("grantifyLoggedIn");
+    navigate("/");
+  };
+
+  const handleExit = () => {
+    localStorage.removeItem("grantifyLoggedIn");
+    navigate("/student-login");
   };
 
   if (!user) {
@@ -64,279 +89,223 @@ function Profile() {
       <Navbar />
 
       <main className="profile-page">
+        <div className="profile-card">
 
-        <div className="profile-container">
-
-          <section className="profile-header">
-
+          {/* Profile Header */}
+          <div className="profile-header">
             <div className="profile-avatar">
-              {user.name.charAt(0).toUpperCase()}
+              {user.name
+                ? user.name.charAt(0).toUpperCase()
+                : "U"}
             </div>
 
             <div>
               <h1>{user.name}</h1>
               <p>{user.email}</p>
-              <span className="student-badge">
-                Student
-              </span>
             </div>
+          </div>
 
+          {/* Personal Information */}
+          <section className="profile-section">
+            <h2>Personal Information</h2>
+
+            <div className="form-grid">
+
+              <div className="form-group">
+                <label>Full Name</label>
+
+                <input
+                  type="text"
+                  name="name"
+                  value={user.name || ""}
+                  onChange={handleChange}
+                  disabled={!editing}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Email Address</label>
+
+                <input
+                  type="email"
+                  name="email"
+                  value={user.email || ""}
+                  onChange={handleChange}
+                  disabled={!editing}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Country</label>
+
+                <input
+                  type="text"
+                  name="country"
+                  value={user.country || ""}
+                  onChange={handleChange}
+                  disabled={!editing}
+                />
+              </div>
+
+            </div>
           </section>
 
-          {message && (
-            <div className="profile-success">
-              {message}
+          {/* Academic Information */}
+          <section className="profile-section">
+            <h2>Academic Information</h2>
+
+            <div className="form-grid">
+
+              <div className="form-group">
+                <label>CGPA</label>
+
+                <input
+                  type="number"
+                  name="cgpa"
+                  min="0"
+                  max="4"
+                  step="0.01"
+                  value={user.cgpa || ""}
+                  onChange={handleChange}
+                  disabled={!editing}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Target Degree</label>
+
+                <select
+                  name="degree"
+                  value={user.degree || ""}
+                  onChange={handleChange}
+                  disabled={!editing}
+                >
+                  <option value="">Select Degree</option>
+                  <option value="Undergraduate">
+                    Undergraduate
+                  </option>
+                  <option value="Masters">
+                    Masters
+                  </option>
+                  <option value="PhD">
+                    PhD
+                  </option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Field of Study</label>
+
+                <input
+                  type="text"
+                  name="field"
+                  value={user.field || ""}
+                  onChange={handleChange}
+                  disabled={!editing}
+                />
+              </div>
+
             </div>
-          )}
+          </section>
 
-          <form onSubmit={handleSave}>
+          {/* Academic Credentials */}
+          <section className="profile-section">
+            <h2>Academic Credentials</h2>
 
-            <section className="profile-section">
+            <div className="form-grid">
 
-              <div className="section-heading">
-                <div>
-                  <h2>Personal Information</h2>
-                  <p>
-                    Your basic account information.
-                  </p>
-                </div>
+              <div className="form-group">
+                <label>Institution</label>
+
+                <input
+                  type="text"
+                  name="institution"
+                  value={user.institution || ""}
+                  onChange={handleChange}
+                  disabled={!editing}
+                />
               </div>
 
-              <div className="form-grid">
+              <div className="form-group">
+                <label>Graduation Year</label>
 
-                <div className="form-group">
-                  <label>Full Name</label>
-
-                  <input
-                    type="text"
-                    name="name"
-                    value={user.name}
-                    onChange={handleChange}
-                    disabled={!editing}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Email Address</label>
-
-                  <input
-                    type="email"
-                    name="email"
-                    value={user.email}
-                    disabled
-                  />
-                </div>
-
+                <input
+                  type="number"
+                  name="graduationYear"
+                  value={user.graduationYear || ""}
+                  onChange={handleChange}
+                  disabled={!editing}
+                />
               </div>
 
-            </section>
+            </div>
+          </section>
 
-            <section className="profile-section">
+          {/* Bottom Action Area */}
+          <div className="profile-bottom-actions">
 
-              <div className="section-heading">
-                <div>
-                  <h2>Academic Information</h2>
-                  <p>
-                    Your scholarship matching criteria.
-                  </p>
-                </div>
-              </div>
-
-              <div className="form-grid">
-
-                <div className="form-group">
-                  <label>CGPA</label>
-
-                  <input
-                    type="number"
-                    name="cgpa"
-                    min="0"
-                    max="4"
-                    step="0.01"
-                    value={user.cgpa}
-                    onChange={handleChange}
-                    disabled={!editing}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Country</label>
-
-                  <select
-                    name="country"
-                    value={user.country}
-                    onChange={handleChange}
-                    disabled={!editing}
-                  >
-                    <option value="Bangladesh">
-                      Bangladesh
-                    </option>
-                    <option value="India">
-                      India
-                    </option>
-                    <option value="Pakistan">
-                      Pakistan
-                    </option>
-                    <option value="United States">
-                      United States
-                    </option>
-                    <option value="United Kingdom">
-                      United Kingdom
-                    </option>
-                    <option value="Canada">
-                      Canada
-                    </option>
-                    <option value="Australia">
-                      Australia
-                    </option>
-                    <option value="Germany">
-                      Germany
-                    </option>
-                    <option value="Other">
-                      Other
-                    </option>
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label>Target Degree</label>
-
-                  <select
-                    name="degree"
-                    value={user.degree}
-                    onChange={handleChange}
-                    disabled={!editing}
-                  >
-                    <option value="Undergraduate">
-                      Undergraduate
-                    </option>
-                    <option value="Masters">
-                      Masters
-                    </option>
-                    <option value="PhD">
-                      PhD
-                    </option>
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label>Field of Study</label>
-
-                  <select
-                    name="field"
-                    value={user.field}
-                    onChange={handleChange}
-                    disabled={!editing}
-                  >
-                    <option value="Computer Science">
-                      Computer Science
-                    </option>
-                    <option value="Engineering">
-                      Engineering
-                    </option>
-                    <option value="Business">
-                      Business
-                    </option>
-                    <option value="Medicine">
-                      Medicine
-                    </option>
-                    <option value="Law">
-                      Law
-                    </option>
-                    <option value="Science">
-                      Science
-                    </option>
-                    <option value="Arts">
-                      Arts
-                    </option>
-                    <option value="Other">
-                      Other
-                    </option>
-                  </select>
-                </div>
-
-              </div>
-
-            </section>
-
-            <section className="profile-section">
-
-              <div className="section-heading">
-                <div>
-                  <h2>Academic Credentials</h2>
-                  <p>
-                    Your educational background.
-                  </p>
-                </div>
-              </div>
-
-              <div className="form-grid">
-
-                <div className="form-group">
-                  <label>Institution</label>
-
-                  <input
-                    type="text"
-                    name="institution"
-                    value={user.institution}
-                    onChange={handleChange}
-                    disabled={!editing}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>
-                    Expected Graduation Year
-                  </label>
-
-                  <input
-                    type="number"
-                    name="graduationYear"
-                    value={user.graduationYear}
-                    onChange={handleChange}
-                    disabled={!editing}
-                  />
-                </div>
-
-              </div>
-
-            </section>
-
-            <div className="profile-actions">
-
+            {/* Left Side */}
+            <div className="profile-left-actions">
               {!editing ? (
                 <button
                   type="button"
                   className="primary-button profile-button"
-                  onClick={() => setEditing(true)}
+                  onClick={handleEdit}
                 >
                   Edit Profile
                 </button>
               ) : (
                 <>
                   <button
-                    type="submit"
-                    className="primary-button"
+                    type="button"
+                    className="secondary-button"
+                    onClick={handleCancel}
                   >
-                    Save Changes
+                    Cancel
                   </button>
 
                   <button
                     type="button"
-                    className="secondary-button"
-                    onClick={() => setEditing(false)}
+                    className="primary-button profile-button"
+                    onClick={handleSave}
                   >
-                    Cancel
+                    Save Changes
                   </button>
                 </>
               )}
+            </div>
+
+            {/* Right Side */}
+            <div className="profile-right-actions">
+
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={handleExit}
+              >
+                Exit
+              </button>
 
             </div>
 
-          </form>
+          </div>
+
+          {/* Message */}
+          {message && (
+            <p className="message success-message">
+              {message}
+            </p>
+          )}
 
         </div>
-
       </main>
     </>
   );

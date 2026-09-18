@@ -43,6 +43,9 @@ select {
 }
 
 
+/* =========================
+   AUTH NAVBAR
+   ========================= */
 
 .auth-navbar {
   width: 100%;
@@ -140,6 +143,9 @@ select {
 }
 
 
+/* =========================
+   AUTH PAGE
+   ========================= */
 
 .auth-page {
   min-height: calc(100vh - 72px);
@@ -206,6 +212,9 @@ select {
 }
 
 
+/* =========================
+   FORM
+   ========================= */
 
 .form-group {
   margin-bottom: 19px;
@@ -266,32 +275,52 @@ select {
   font-size: 12px;
 }
 
+
+/* =========================
+   PASSWORD
+   ========================= */
+
 .password-wrapper {
   position: relative;
+  width: 100%;
 }
 
 .password-wrapper input {
-  padding-right: 70px;
+  width: 100%;
+  padding-right: 48px !important;
 }
 
-.show-password {
+.password-toggle {
   position: absolute;
 
-  right: 10px;
+  right: 12px;
   top: 50%;
 
   transform: translateY(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   border: none;
 
   background: transparent;
 
-  color: var(--green);
-
-  font-weight: 700;
+  color: #666;
 
   cursor: pointer;
+
+  padding: 4px;
 }
+
+.password-toggle:hover {
+  color: var(--green);
+}
+
+
+/* =========================
+   BUTTONS
+   ========================= */
 
 .primary-button {
   width: 100%;
@@ -336,6 +365,9 @@ select {
 }
 
 
+/* =========================
+   LOGIN OPTIONS
+   ========================= */
 
 .login-options {
   display: flex;
@@ -396,6 +428,11 @@ select {
   text-decoration: none;
 }
 
+
+/* =========================
+   MESSAGES
+   ========================= */
+
 .message {
   margin-top: 18px;
 
@@ -419,6 +456,9 @@ select {
 }
 
 
+/* =========================
+   REGISTER PAGE
+   ========================= */
 
 .register-page {
   min-height: calc(100vh - 72px);
@@ -479,6 +519,9 @@ select {
 }
 
 
+/* =========================
+   PROFILE PAGE
+   ========================= */
 
 .profile-page {
   min-height: calc(100vh - 72px);
@@ -491,6 +534,9 @@ select {
 
   margin: auto;
 }
+
+
+/* Profile Header */
 
 .profile-header {
   display: flex;
@@ -574,6 +620,9 @@ select {
   font-weight: 700;
 }
 
+
+/* Profile Sections */
+
 .profile-section {
   background: white;
 
@@ -590,13 +639,13 @@ select {
 }
 
 .section-heading {
-  margin-bottom: 22px;
+  margin-bottom: 30px;
 }
 
 .section-heading h2 {
   color: var(--green-dark);
 
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .section-heading p {
@@ -605,14 +654,70 @@ select {
   font-size: 14px;
 }
 
-.profile-actions {
+
+/* =========================
+   PROFILE BOTTOM BUTTONS
+   ========================= */
+
+.profile-bottom-actions {
+  width: 100%;
+
   display: flex;
 
-  justify-content: flex-end;
+  justify-content: space-between;
 
-  gap: 12px;
+  align-items: center;
+
+  margin-top: 30px;
 
   margin-bottom: 40px;
+}
+
+.profile-left-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+.profile-right-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+/* Make every profile action button green */
+
+.profile-bottom-actions button {
+  width: auto;
+
+  min-width: 110px;
+
+  padding: 13px 22px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: var(--green);
+
+  color: white;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.profile-bottom-actions button:hover {
+  background: var(--green-dark);
+
+  transform: translateY(-1px);
 }
 
 .profile-button {
@@ -623,6 +728,9 @@ select {
 }
 
 
+/* =========================
+   MOBILE / TABLET
+   ========================= */
 
 @media (max-width: 700px) {
 
@@ -656,32 +764,55 @@ select {
 
     align-items: flex-start;
   }
+}
 
-  .profile-actions {
+
+/* Profile buttons on small screens */
+
+@media (max-width: 600px) {
+
+  .profile-bottom-actions {
     flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 15px;
   }
 
-  .profile-actions button {
+  .profile-left-actions,
+  .profile-right-actions {
     width: 100%;
+
+    justify-content: flex-end;
   }
 }
 
 
+/* =========================
+   AUTH BRAND NAVBAR
+   ========================= */
+
 .auth-navbar {
   width: 100%;
+
   height: 80px;
+
   padding: 0 30px;
 
   display: flex;
+
   align-items: center;
 
   background: #ffffff;
+
   border-bottom: 1px solid #eeeeee;
 }
 
 .auth-brand {
   display: flex;
+
   align-items: center;
+
   gap: 12px;
 }
 
@@ -690,33 +821,42 @@ select {
   height: 48px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
   background: #4f9f70;
+
   color: white;
 
   border-radius: 12px;
 
   font-size: 28px;
+
   font-weight: bold;
 }
 
 .auth-brand span {
   font-size: 32px;
+
   font-weight: 700;
+
   color: #3f7f59;
 }
 
 @media (max-width: 800px) {
+
   .auth-navbar {
     height: 75px;
+
     padding: 0 25px;
   }
 
   .auth-brand-icon {
     width: 50px;
+
     height: 50px;
+
     font-size: 30px;
   }
 
@@ -726,6 +866,159 @@ select {
 }
 
 
+/* =========================
+   ROLE SELECTOR
+   ========================= */
+
+.role-selector {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  border: 1px solid #d9d9d9;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  margin-bottom: 25px;
+
+  background: #ffffff;
+}
+
+.role-option {
+  height: 55px;
+
+  border: none;
+
+  background: #ffffff;
+
+  color: #333333;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.role-option:first-child {
+  border-right: 1px solid #d9d9d9;
+}
+
+.role-option:hover {
+  background: #f0f8f3;
+
+  color: #3f7f59;
+}
+
+@media (max-width: 600px) {
+
+  .role-option {
+    height: 50px;
+
+    font-size: 15px;
+  }
+}
 
 
+/* =========================
+   AUTH FORM
+   ========================= */
 
+.auth-card .form-group {
+  display: flex;
+
+  flex-direction: column;
+
+  width: 100%;
+
+  margin-bottom: 18px;
+}
+
+.auth-card .form-group label {
+  display: block;
+
+  width: 100%;
+
+  margin-bottom: 8px;
+}
+
+.auth-card .form-group input {
+  display: block;
+
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================
+   LOGIN FORM
+   ========================= */
+
+.login-form {
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.login-form .form-group {
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  margin-bottom: 20px;
+}
+
+.login-form .form-group label {
+  display: block;
+
+  width: 100%;
+
+  margin-bottom: 8px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  color: #333333;
+}
+
+.login-form .form-group input {
+  display: block;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 13px 15px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  font-size: 15px;
+
+  outline: none;
+}
+
+.login-form .form-group input:focus {
+  border-color: var(--green);
+}
+
+.login-form .primary-button {
+  width: 100%;
+
+  margin-top: 5px;
+}
