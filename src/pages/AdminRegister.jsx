@@ -58,12 +58,16 @@ function AdminRegister() {
       JSON.stringify(admin)
     );
 
+    localStorage.setItem("grantifyAdminLoggedIn", "true");
+    localStorage.setItem("grantifyLoggedIn", "true");
+    localStorage.setItem("grantifyRole", "admin");
+
     setMessage(
       "Admin registration successful! Redirecting..."
     );
 
     setTimeout(() => {
-      navigate("/admin-login");
+      navigate("/adminanalytics");
     }, 800);
   };
 

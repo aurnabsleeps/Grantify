@@ -1,11 +1,14 @@
 
 import React from 'react'
+import Header from './components/Header/Header'
 import './AdminUserManagement.css'
 import { Trash2 } from 'lucide-react'
 
 const AdminUserManagement = () => {
   return (
-    <div className='user-container'>
+    <div>
+      <Header />
+      <div className='user-container'>
       
       <div className="graph-card">
         <div className="card-header">
@@ -72,6 +75,7 @@ const AdminUserManagement = () => {
         </table>
       </div>
 
+    </div>
     </div>
   )
 }

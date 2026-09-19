@@ -39,6 +39,8 @@ function AdminLogin() {
     }
 
     localStorage.setItem("grantifyAdminLoggedIn", "true");
+    localStorage.setItem("grantifyLoggedIn", "true");
+    localStorage.setItem("grantifyRole", "admin");
 
     setMessage("Admin login successful!");
 

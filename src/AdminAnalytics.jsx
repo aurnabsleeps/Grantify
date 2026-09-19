@@ -1,11 +1,14 @@
 
 import React from 'react'
+import Header from './components/Header/Header'
 import './AdminAnalytics.css'
 import { GraduationCap, Users, BookOpen, TrendingUp, Award, CheckCircle } from 'lucide-react'
 
 const AdminAnalytics = () => {
   return (
-    <div className='user-container'>
+    <div>
+      <Header />
+      <div className='user-container'>
       
       {/* Top Stats Section */}
       <div className="more-details-card-container">
@@ -86,6 +89,7 @@ const AdminAnalytics = () => {
         </div>
       </div>
 
+    </div>
     </div>
   )
 }

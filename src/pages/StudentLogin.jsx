@@ -39,11 +39,12 @@ function StudentLogin() {
     }
 
     localStorage.setItem("grantifyLoggedIn", "true");
+    localStorage.setItem("grantifyRole", "student");
 
     setMessage("Login successful!");
 
     setTimeout(() => {
-      navigate("/profile");
+      navigate("/scholarships");
     }, 700);
   };
 

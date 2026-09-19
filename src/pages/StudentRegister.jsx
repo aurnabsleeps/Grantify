@@ -83,12 +83,17 @@ function StudentRegister() {
       "true"
     );
 
+    localStorage.setItem(
+      "grantifyRole",
+      "student"
+    );
+
     setMessage(
       "Registration successful! Redirecting..."
     );
 
     setTimeout(() => {
-      navigate("/profile");
+      navigate("/scholarships");
     }, 800);
   };
 

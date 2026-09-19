@@ -19,26 +19,37 @@ import StudentRegister from "./pages/StudentRegister";
 
 import "./App.css";
 
+// Helper component for Student page access
+function ProtectedStudentRoute({ children }) {
+  const isLoggedIn = localStorage.getItem("grantifyLoggedIn") === "true";
+  const role = localStorage.getItem("grantifyRole");
+
+  if (!isLoggedIn || role !== "student") {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+}
+
+// Helper component for Admin page access
+function ProtectedAdminRoute({ children }) {
+  const isLoggedIn =
+    localStorage.getItem("grantifyLoggedIn") === "true" ||
+    localStorage.getItem("grantifyAdminLoggedIn") === "true";
+  const role =
+    localStorage.getItem("grantifyRole") ||
+    (localStorage.getItem("grantifyAdminLoggedIn") === "true" ? "admin" : null);
+
+  if (!isLoggedIn || role !== "admin") {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+}
+
 function App() {
   return (
     <Routes>
-      {/* Homepage */}
+      {/* Guest Page (Public Homepage) */}
       <Route path="/" element={<Home />} />
-
-      {/* Scholarship Features */}
-      <Route path="/scholarships" element={<Scholarship />} />
-      <Route path="/applications" element={<ApplicationTracker />} />
-
-      {/* Admin Pages */}
-      <Route path="/adminanalytics" element={<AdminAnalytics />} />
-      <Route
-        path="/admindatamanagement"
-        element={<AdminDataManagement />}
-      />
-      <Route
-        path="/adminusermanagement"
-        element={<AdminUserManagement />}
-      />
 
       {/* Authentication Pages */}
       <Route path="/login" element={<Login />} />
@@ -49,10 +60,59 @@ function App() {
       <Route path="/admin-register" element={<AdminRegister />} />
       <Route path="/student-register" element={<StudentRegister />} />
 
-      {/* Student Profile */}
-      <Route path="/profile" element={<Profile />} />
+      {/* Student Only Pages */}
+      <Route
+        path="/scholarships"
+        element={
+          <ProtectedStudentRoute>
+            <Scholarship />
+          </ProtectedStudentRoute>
+        }
+      />
+      <Route
+        path="/applications"
+        element={
+          <ProtectedStudentRoute>
+            <ApplicationTracker />
+          </ProtectedStudentRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedStudentRoute>
+            <Profile />
+          </ProtectedStudentRoute>
+        }
+      />
 
-      {/* Redirect unknown URLs to Home */}
+      {/* Admin Only Pages */}
+      <Route
+        path="/adminanalytics"
+        element={
+          <ProtectedAdminRoute>
+            <AdminAnalytics />
+          </ProtectedAdminRoute>
+        }
+      />
+      <Route
+        path="/admindatamanagement"
+        element={
+          <ProtectedAdminRoute>
+            <AdminDataManagement />
+          </ProtectedAdminRoute>
+        }
+      />
+      <Route
+        path="/adminusermanagement"
+        element={
+          <ProtectedAdminRoute>
+            <AdminUserManagement />
+          </ProtectedAdminRoute>
+        }
+      />
+
+      {/* Redirect unknown URLs to Guest Home */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

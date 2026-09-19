@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react'
+import Header from './components/Header/Header'
 import './AdminDataManagement.css'
 import { PlusCircle, Trash2, Edit, Database } from 'lucide-react'
 
@@ -15,7 +16,9 @@ const AdminDataManagement = () => {
   }
 
   return (
-    <div className='user-container'>
+    <div>
+      <Header />
+      <div className='user-container'>
       
       {/* Form Card */}
       <div className="graph-card">
@@ -94,6 +97,7 @@ const AdminDataManagement = () => {
         </table>
       </div>
 
+    </div>
     </div>
   )
 }
