@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import Navbar from "../components/Navbar";
 import RoleSelector from "../components/RoleSelector";
+import { loginUser } from "../api";
 
 function StudentLogin() {
   const navigate = useNavigate();
@@ -12,40 +13,40 @@ function StudentLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     setMessage("");
     setError(false);
+    setLoading(true);
 
-    const storedUser = localStorage.getItem("grantifyUser");
+    try {
+      const data = await loginUser({
+        email: email.trim().toLowerCase(),
+        password,
+        role: "student",
+      });
 
-    if (!storedUser) {
+      localStorage.setItem("grantifyUser", JSON.stringify(data.user));
+      if (data.token) {
+        localStorage.setItem("grantifyToken", data.token);
+      }
+      localStorage.setItem("grantifyLoggedIn", "true");
+      localStorage.setItem("grantifyRole", "student");
+
+      setMessage("Login successful!");
+
+      setTimeout(() => {
+        navigate("/scholarships");
+      }, 700);
+    } catch (err) {
       setError(true);
-      setMessage("No account found. Please register first.");
-      return;
+      setMessage(err.message || "Cannot connect to server. Please ensure backend is running.");
+    } finally {
+      setLoading(false);
     }
-
-    const user = JSON.parse(storedUser);
-
-    if (
-      email.trim().toLowerCase() !== user.email.trim().toLowerCase() ||
-      password !== user.password
-    ) {
-      setError(true);
-      setMessage("Invalid email or password.");
-      return;
-    }
-
-    localStorage.setItem("grantifyLoggedIn", "true");
-    localStorage.setItem("grantifyRole", "student");
-
-    setMessage("Login successful!");
-
-    setTimeout(() => {
-      navigate("/scholarships");
-    }, 700);
   };
 
   return (
@@ -111,8 +112,9 @@ function StudentLogin() {
             <button
               type="submit"
               className="primary-button"
+              disabled={loading}
             >
-              Login
+              {loading ? "Logging in..." : "Login"}
             </button>
 
           </form>
@@ -131,7 +133,7 @@ function StudentLogin() {
 
           <p className="auth-footer">
             Don't have an account?{" "}
-            <Link to="/register">
+            <Link to="/student-register">
               Create Account
             </Link>
           </p>

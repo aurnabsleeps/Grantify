@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import Navbar from "../components/Navbar";
 import RoleSelector from "../components/RoleSelector";
+import { loginUser } from "../api";
 
 function AdminLogin() {
   const navigate = useNavigate();
@@ -12,41 +13,42 @@ function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     setMessage("");
     setError(false);
+    setLoading(true);
 
-    const storedAdmin = localStorage.getItem("grantifyAdmin");
+    try {
+      const data = await loginUser({
+        email: email.trim().toLowerCase(),
+        password,
+        role: "admin",
+      });
 
-    if (!storedAdmin) {
+      localStorage.setItem("grantifyAdmin", JSON.stringify(data.user));
+      localStorage.setItem("grantifyUser", JSON.stringify(data.user));
+      if (data.token) {
+        localStorage.setItem("grantifyToken", data.token);
+      }
+      localStorage.setItem("grantifyAdminLoggedIn", "true");
+      localStorage.setItem("grantifyLoggedIn", "true");
+      localStorage.setItem("grantifyRole", "admin");
+
+      setMessage("Admin login successful!");
+
+      setTimeout(() => {
+        navigate("/adminanalytics");
+      }, 700);
+    } catch (err) {
       setError(true);
-      setMessage("No admin account found.");
-      return;
+      setMessage(err.message || "Cannot connect to server. Please ensure backend is running.");
+    } finally {
+      setLoading(false);
     }
-
-    const admin = JSON.parse(storedAdmin);
-
-    if (
-      email.trim().toLowerCase() !== admin.email.trim().toLowerCase() ||
-      password !== admin.password
-    ) {
-      setError(true);
-      setMessage("Invalid admin email or password.");
-      return;
-    }
-
-    localStorage.setItem("grantifyAdminLoggedIn", "true");
-    localStorage.setItem("grantifyLoggedIn", "true");
-    localStorage.setItem("grantifyRole", "admin");
-
-    setMessage("Admin login successful!");
-
-    setTimeout(() => {
-      navigate("/adminanalytics");
-    }, 700);
   };
 
   return (
@@ -112,8 +114,9 @@ function AdminLogin() {
             <button
               type="submit"
               className="primary-button"
+              disabled={loading}
             >
-              Login
+              {loading ? "Logging in..." : "Login"}
             </button>
 
           </form>

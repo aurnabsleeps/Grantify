@@ -1,4 +1,7 @@
 import Header from "../Header/Header";
+import statueImg from "../../assets/images/statue.png";
+import parisImg from "../../assets/images/paris.jpg";
+import bigBenImg from "../../assets/images/big-ben.jpg";
 
 const Home = () => {
   return (
@@ -27,15 +30,15 @@ const Home = () => {
         <div className="hero-images">
 
           <div className="image-card small-card">
-            <img src="src/assets/images/statue.png" alt="University destination" />
+            <img src={statueImg} alt="University destination" />
           </div>
 
           <div className="image-card main-card">
-            <img src="src/assets/images/paris.jpg" alt="Paris destination" />
+            <img src={parisImg} alt="Paris destination" />
           </div>
 
           <div className="image-card small-card">
-            <img src="src/assets/images/big-ben.jpg" alt="London destination" />
+            <img src={bigBenImg} alt="London destination" />
           </div>
 
         </div>

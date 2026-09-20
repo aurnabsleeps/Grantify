@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import RoleSelector from "../components/RoleSelector";
+import { registerUser } from "../api";
 
 function AdminRegister() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ function AdminRegister() {
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -25,7 +27,7 @@ function AdminRegister() {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     setMessage("");
@@ -33,42 +35,46 @@ function AdminRegister() {
 
     if (formData.password.length < 6) {
       setError(true);
-      setMessage(
-        "Password must contain at least 6 characters."
-      );
+      setMessage("Password must contain at least 6 characters.");
       return;
     }
 
-    if (
-      formData.password !== formData.confirmPassword
-    ) {
+    if (formData.password !== formData.confirmPassword) {
       setError(true);
       setMessage("Passwords do not match.");
       return;
     }
 
-    const admin = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password
-    };
+    setLoading(true);
 
-    localStorage.setItem(
-      "grantifyAdmin",
-      JSON.stringify(admin)
-    );
+    try {
+      const data = await registerUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: "admin",
+      });
 
-    localStorage.setItem("grantifyAdminLoggedIn", "true");
-    localStorage.setItem("grantifyLoggedIn", "true");
-    localStorage.setItem("grantifyRole", "admin");
+      localStorage.setItem("grantifyAdmin", JSON.stringify(data.user));
+      localStorage.setItem("grantifyUser", JSON.stringify(data.user));
+      if (data.token) {
+        localStorage.setItem("grantifyToken", data.token);
+      }
+      localStorage.setItem("grantifyAdminLoggedIn", "true");
+      localStorage.setItem("grantifyLoggedIn", "true");
+      localStorage.setItem("grantifyRole", "admin");
 
-    setMessage(
-      "Admin registration successful! Redirecting..."
-    );
+      setMessage("Admin registration successful! Redirecting...");
 
-    setTimeout(() => {
-      navigate("/adminanalytics");
-    }, 800);
+      setTimeout(() => {
+        navigate("/adminanalytics");
+      }, 800);
+    } catch (err) {
+      setError(true);
+      setMessage(err.message || "Cannot connect to server. Please ensure backend is running.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -153,8 +159,9 @@ function AdminRegister() {
             <button
               type="submit"
               className="primary-button"
+              disabled={loading}
             >
-              Create Admin Account
+              {loading ? "Creating Admin..." : "Create Admin Account"}
             </button>
 
           </form>
@@ -173,7 +180,7 @@ function AdminRegister() {
 
           <p className="auth-footer">
             Already have an account?{" "}
-            <Link to="/login">
+            <Link to="/admin-login">
               Login
             </Link>
           </p>

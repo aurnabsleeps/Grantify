@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import RoleSelector from "../components/RoleSelector";
+import { registerUser } from "../api";
 
 function StudentRegister() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ function StudentRegister() {
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -31,7 +33,7 @@ function StudentRegister() {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     setMessage("");
@@ -47,54 +49,50 @@ function StudentRegister() {
 
     if (formData.password.length < 6) {
       setError(true);
-      setMessage(
-        "Password must contain at least 6 characters."
-      );
+      setMessage("Password must contain at least 6 characters.");
       return;
     }
 
-    if (
-      formData.password !== formData.confirmPassword
-    ) {
+    if (formData.password !== formData.confirmPassword) {
       setError(true);
       setMessage("Passwords do not match.");
       return;
     }
 
-    const user = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      cgpa: cgpa,
-      country: formData.country,
-      degree: formData.degree,
-      field: formData.field,
-      institution: formData.institution,
-      graduationYear: formData.graduationYear
-    };
+    setLoading(true);
 
-    localStorage.setItem(
-      "grantifyUser",
-      JSON.stringify(user)
-    );
+    try {
+      const data = await registerUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: "student",
+        cgpa: cgpa,
+        country: formData.country,
+        degree: formData.degree,
+        field: formData.field,
+        institution: formData.institution,
+        graduationYear: formData.graduationYear,
+      });
 
-    localStorage.setItem(
-      "grantifyLoggedIn",
-      "true"
-    );
+      localStorage.setItem("grantifyUser", JSON.stringify(data.user));
+      if (data.token) {
+        localStorage.setItem("grantifyToken", data.token);
+      }
+      localStorage.setItem("grantifyLoggedIn", "true");
+      localStorage.setItem("grantifyRole", "student");
 
-    localStorage.setItem(
-      "grantifyRole",
-      "student"
-    );
+      setMessage("Registration successful! Redirecting to scholarships...");
 
-    setMessage(
-      "Registration successful! Redirecting..."
-    );
-
-    setTimeout(() => {
-      navigate("/scholarships");
-    }, 800);
+      setTimeout(() => {
+        navigate("/scholarships");
+      }, 800);
+    } catch (err) {
+      setError(true);
+      setMessage(err.message || "Cannot connect to server. Please ensure backend is running.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -359,8 +357,9 @@ function StudentRegister() {
             <button
               type="submit"
               className="primary-button"
+              disabled={loading}
             >
-              Create Grantify Account
+              {loading ? "Creating Account..." : "Create Grantify Account"}
             </button>
 
           </form>
@@ -380,7 +379,7 @@ function StudentRegister() {
           <p className="auth-footer">
             Already have an account?
 
-            <Link to="/login">
+            <Link to="/student-login">
               Login
             </Link>
           </p>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { getUserProfile, updateUserProfile } from "../api";
 
 function Profile() {
   const navigate = useNavigate();
@@ -8,6 +9,8 @@ function Profile() {
   const [user, setUser] = useState(null);
   const [editing, setEditing] = useState(false);
   const [message, setMessage] = useState("");
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const loggedIn = localStorage.getItem("grantifyLoggedIn");
@@ -19,7 +22,20 @@ function Profile() {
     }
 
     try {
-      setUser(JSON.parse(storedUser));
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
+
+      // Fetch latest profile from MongoDB
+      if (parsedUser && parsedUser.email) {
+        getUserProfile(parsedUser.email)
+          .then((freshUser) => {
+            setUser(freshUser);
+            localStorage.setItem("grantifyUser", JSON.stringify(freshUser));
+          })
+          .catch((err) => {
+            console.log("Using cached profile data:", err.message);
+          });
+      }
     } catch (error) {
       localStorage.removeItem("grantifyUser");
       localStorage.removeItem("grantifyLoggedIn");
@@ -41,6 +57,7 @@ function Profile() {
   const handleEdit = () => {
     setEditing(true);
     setMessage("");
+    setError(false);
   };
 
   const handleCancel = () => {
@@ -52,26 +69,53 @@ function Profile() {
 
     setEditing(false);
     setMessage("");
+    setError(false);
   };
 
-  const handleSave = (event) => {
+  const handleSave = async (event) => {
     event.preventDefault();
+    setMessage("");
+    setError(false);
 
     const cgpa = Number(user.cgpa);
 
-    if (user.cgpa !== "" && (cgpa < 0 || cgpa > 4)) {
+    if (user.cgpa !== undefined && user.cgpa !== "" && (cgpa < 0 || cgpa > 4)) {
+      setError(true);
       setMessage("CGPA must be between 0 and 4.");
       return;
     }
 
-    localStorage.setItem("grantifyUser", JSON.stringify(user));
+    setLoading(true);
 
-    setEditing(false);
-    setMessage("Profile updated successfully.");
+    try {
+      const updatedUser = await updateUserProfile({
+        email: user.email,
+        name: user.name,
+        country: user.country,
+        cgpa: user.cgpa,
+        degree: user.degree,
+        field: user.field,
+        institution: user.institution,
+        graduationYear: user.graduationYear,
+      });
+
+      localStorage.setItem("grantifyUser", JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      setEditing(false);
+      setMessage("Profile updated successfully in MongoDB.");
+    } catch (err) {
+      setError(true);
+      setMessage(err.message || "Failed to update profile.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleLogout = () => {
     localStorage.removeItem("grantifyLoggedIn");
+    localStorage.removeItem("grantifyUser");
+    localStorage.removeItem("grantifyToken");
+    localStorage.removeItem("grantifyRole");
     navigate("/");
   };
 
@@ -130,8 +174,7 @@ function Profile() {
                   type="email"
                   name="email"
                   value={user.email || ""}
-                  onChange={handleChange}
-                  disabled={!editing}
+                  disabled
                 />
               </div>
 
@@ -165,7 +208,7 @@ function Profile() {
                   min="0"
                   max="4"
                   step="0.01"
-                  value={user.cgpa || ""}
+                  value={user.cgpa !== undefined && user.cgpa !== null ? user.cgpa : ""}
                   onChange={handleChange}
                   disabled={!editing}
                 />
@@ -230,7 +273,7 @@ function Profile() {
                 <label>Graduation Year</label>
 
                 <input
-                  type="number"
+                  type="text"
                   name="graduationYear"
                   value={user.graduationYear || ""}
                   onChange={handleChange}
@@ -260,6 +303,7 @@ function Profile() {
                     type="button"
                     className="secondary-button"
                     onClick={handleCancel}
+                    disabled={loading}
                   >
                     Cancel
                   </button>
@@ -268,8 +312,9 @@ function Profile() {
                     type="button"
                     className="primary-button profile-button"
                     onClick={handleSave}
+                    disabled={loading}
                   >
-                    Save Changes
+                    {loading ? "Saving..." : "Save Changes"}
                   </button>
                 </>
               )}
@@ -300,7 +345,7 @@ function Profile() {
 
           {/* Message */}
           {message && (
-            <p className="message success-message">
+            <p className={error ? "message error-message" : "message success-message"}>
               {message}
             </p>
           )}
