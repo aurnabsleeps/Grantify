@@ -76,3 +76,118 @@
 
   cursor: pointer;
 }
+
+
+/* Scholarship Details Modal */
+
+.scholarship-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.scholarship-modal {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-sizing: border-box;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.scholarship-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 18px;
+  width: 35px;
+  height: 35px;
+  border: none;
+  background: transparent;
+  color: #555;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.scholarship-modal h2 {
+  margin: 0 40px 8px 0;
+  font-size: 26px;
+  color: #173b2c;
+}
+
+.modal-university {
+  margin: 0 0 25px;
+  color: #666;
+  font-size: 16px;
+}
+
+.modal-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.modal-details div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.modal-details span {
+  font-size: 13px;
+  color: #777;
+}
+
+.modal-details strong {
+  font-size: 15px;
+  color: #222;
+}
+
+.modal-apply-button {
+  width: 100%;
+  padding: 13px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #087f5b;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.modal-apply-button:hover {
+  background: #05603f;
+}
+
+.modal-apply-button.applied {
+  background: #6b7280;
+  cursor: default;
+}
+
+@media (max-width: 600px) {
+  .scholarship-modal {
+    padding: 25px 20px;
+  }
+
+  .scholarship-modal h2 {
+    font-size: 22px;
+  }
+
+  .modal-details {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}

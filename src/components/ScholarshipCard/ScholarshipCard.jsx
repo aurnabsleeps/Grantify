@@ -1,6 +1,6 @@
 import "./ScholarshipCard.css";
 
-const ScholarshipCard = ({ scholarship }) => {
+const ScholarshipCard = ({ scholarship, onView }) => {
   return (
     <div className="scholarship-card">
 
@@ -27,7 +27,11 @@ const ScholarshipCard = ({ scholarship }) => {
         </div>
       </div>
 
-      <button className="view-button">
+      <button
+        type="button"
+        className="view-button"
+        onClick={() => onView(scholarship)}
+      >
         View Scholarship
       </button>
 
