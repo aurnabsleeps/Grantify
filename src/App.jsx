@@ -17,6 +17,8 @@ import StudentLogin from "./pages/StudentLogin";
 import AdminRegister from "./pages/AdminRegister";
 import StudentRegister from "./pages/StudentRegister";
 
+import CarbonFootprintDisplay from "./components/CarbonFootprintDisplay/CarbonFootprintDisplay";
+
 import "./App.css";
 
 // Helper component for Student page access
@@ -47,74 +49,79 @@ function ProtectedAdminRoute({ children }) {
 
 function App() {
   return (
-    <Routes>
-      {/* Guest Page (Public Homepage) */}
-      <Route path="/" element={<Home />} />
+    <>
+      <Routes>
+        {/* Guest Page (Public Homepage) */}
+        <Route path="/" element={<Home />} />
 
-      {/* Authentication Pages */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/admin-login" element={<AdminLogin />} />
-      <Route path="/student-login" element={<StudentLogin />} />
+        {/* Authentication Pages */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/student-login" element={<StudentLogin />} />
 
-      <Route path="/register" element={<Register />} />
-      <Route path="/admin-register" element={<AdminRegister />} />
-      <Route path="/student-register" element={<StudentRegister />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/admin-register" element={<AdminRegister />} />
+        <Route path="/student-register" element={<StudentRegister />} />
 
-      {/* Student Only Pages */}
-      <Route
-        path="/scholarships"
-        element={
-          <ProtectedStudentRoute>
-            <Scholarship />
-          </ProtectedStudentRoute>
-        }
-      />
-      <Route
-        path="/applications"
-        element={
-          <ProtectedStudentRoute>
-            <ApplicationTracker />
-          </ProtectedStudentRoute>
-        }
-      />
-      <Route
-        path="/profile"
-        element={
-          <ProtectedStudentRoute>
-            <Profile />
-          </ProtectedStudentRoute>
-        }
-      />
+        {/* Student Only Pages */}
+        <Route
+          path="/scholarships"
+          element={
+            <ProtectedStudentRoute>
+              <Scholarship />
+            </ProtectedStudentRoute>
+          }
+        />
+        <Route
+          path="/applications"
+          element={
+            <ProtectedStudentRoute>
+              <ApplicationTracker />
+            </ProtectedStudentRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedStudentRoute>
+              <Profile />
+            </ProtectedStudentRoute>
+          }
+        />
 
-      {/* Admin Only Pages */}
-      <Route
-        path="/adminanalytics"
-        element={
-          <ProtectedAdminRoute>
-            <AdminAnalytics />
-          </ProtectedAdminRoute>
-        }
-      />
-      <Route
-        path="/admindatamanagement"
-        element={
-          <ProtectedAdminRoute>
-            <AdminDataManagement />
-          </ProtectedAdminRoute>
-        }
-      />
-      <Route
-        path="/adminusermanagement"
-        element={
-          <ProtectedAdminRoute>
-            <AdminUserManagement />
-          </ProtectedAdminRoute>
-        }
-      />
+        {/* Admin Only Pages */}
+        <Route
+          path="/adminanalytics"
+          element={
+            <ProtectedAdminRoute>
+              <AdminAnalytics />
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admindatamanagement"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDataManagement />
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/adminusermanagement"
+          element={
+            <ProtectedAdminRoute>
+              <AdminUserManagement />
+            </ProtectedAdminRoute>
+          }
+        />
 
-      {/* Redirect unknown URLs to Guest Home */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        {/* Redirect unknown URLs to Guest Home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+
+      {/* Carbon Footprint Display Widget */}
+      <CarbonFootprintDisplay />
+    </>
   );
 }
 
