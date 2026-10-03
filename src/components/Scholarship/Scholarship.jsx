@@ -12,12 +12,24 @@ const Scholarship = () => {
   const [degree, setDegree] = useState("All Degrees");
 
   const [selectedScholarship, setSelectedScholarship] = useState(null);
-  const [appliedScholarships, setAppliedScholarships] = useState([]);
+
+  // Load previously applied scholarships from localStorage
+  const [appliedScholarships, setAppliedScholarships] = useState(() => {
+    const saved = localStorage.getItem("appliedScholarships");
+
+    return saved ? JSON.parse(saved) : [];
+  });
 
   const fetchScholarships = async () => {
     try {
       setLoading(true);
-      const data = await getScholarships({ search, country, degree });
+
+      const data = await getScholarships({
+        search,
+        country,
+        degree
+      });
+
       setScholarshipList(data);
     } catch (err) {
       console.error("Failed to load scholarships:", err.message);
@@ -30,14 +42,17 @@ const Scholarship = () => {
     fetchScholarships();
   }, [search, country, degree]);
 
+  // Open scholarship details modal
   const handleViewScholarship = (scholarship) => {
     setSelectedScholarship(scholarship);
   };
 
+  // Close scholarship details modal
   const handleCloseModal = () => {
     setSelectedScholarship(null);
   };
 
+  // Apply to a scholarship
   const handleApply = () => {
     if (!selectedScholarship) {
       return;
@@ -47,14 +62,24 @@ const Scholarship = () => {
       selectedScholarship._id || selectedScholarship.id;
 
     setAppliedScholarships((previous) => {
+      // If already applied, do nothing
       if (previous.includes(scholarshipId)) {
         return previous;
       }
 
-      return [...previous, scholarshipId];
+      const updated = [...previous, scholarshipId];
+
+      // Save applied scholarship IDs in localStorage
+      localStorage.setItem(
+        "appliedScholarships",
+        JSON.stringify(updated)
+      );
+
+      return updated;
     });
   };
 
+  // Check whether the currently selected scholarship is applied
   const isApplied = selectedScholarship
     ? appliedScholarships.includes(
         selectedScholarship._id || selectedScholarship.id
@@ -67,6 +92,7 @@ const Scholarship = () => {
 
       <section className="scholarship-hero">
         <h1>Find Your Scholarship</h1>
+
         <p>
           Discover scholarships and funding opportunities
           that can help you achieve your educational goals.
@@ -140,6 +166,7 @@ const Scholarship = () => {
             className="scholarship-modal"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Close Button */}
             <button
               type="button"
               className="scholarship-modal-close"
@@ -148,12 +175,15 @@ const Scholarship = () => {
               ×
             </button>
 
+            {/* Scholarship Title */}
             <h2>{selectedScholarship.title}</h2>
 
+            {/* University */}
             <p className="modal-university">
               {selectedScholarship.university}
             </p>
 
+            {/* Scholarship Information */}
             <div className="modal-details">
               <div>
                 <span>Country</span>
@@ -176,6 +206,7 @@ const Scholarship = () => {
               </div>
             </div>
 
+            {/* Apply Button */}
             <button
               type="button"
               className={
