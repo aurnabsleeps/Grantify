@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "../Header/Header";
 import ScholarshipCard from "../ScholarshipCard/ScholarshipCard";
-import { getScholarships } from "../../api";
+import { getScholarships, applyForScholarship, getStudentApplications } from "../../api";
 import "./Scholarship.css";
 
 const Scholarship = () => {
@@ -12,24 +12,22 @@ const Scholarship = () => {
   const [degree, setDegree] = useState("All Degrees");
 
   const [selectedScholarship, setSelectedScholarship] = useState(null);
+  const [appliedIds, setAppliedIds] = useState([]);
+  const [applyMessage, setApplyMessage] = useState("");
+  const [applyLoading, setApplyLoading] = useState(false);
 
-  // Load previously applied scholarships from localStorage
-  const [appliedScholarships, setAppliedScholarships] = useState(() => {
-    const saved = localStorage.getItem("appliedScholarships");
-
-    return saved ? JSON.parse(saved) : [];
-  });
+  // Get current logged-in user
+  const storedUserRaw = localStorage.getItem("grantifyUser");
+  const currentUser = storedUserRaw ? JSON.parse(storedUserRaw) : null;
 
   const fetchScholarships = async () => {
     try {
       setLoading(true);
-
       const data = await getScholarships({
         search,
         country,
-        degree
+        degree,
       });
-
       setScholarshipList(data);
     } catch (err) {
       console.error("Failed to load scholarships:", err.message);
@@ -38,53 +36,76 @@ const Scholarship = () => {
     }
   };
 
+  const fetchUserApplications = async () => {
+    if (!currentUser || !currentUser.email) return;
+    try {
+      const res = await getStudentApplications(currentUser.email);
+      if (res && res.applications) {
+        const ids = res.applications.map((app) => String(app.scholarshipId));
+        setAppliedIds(ids);
+      }
+    } catch (err) {
+      console.error("Failed to fetch student applications:", err.message);
+    }
+  };
+
   useEffect(() => {
     fetchScholarships();
   }, [search, country, degree]);
 
+  useEffect(() => {
+    fetchUserApplications();
+  }, []);
+
   // Open scholarship details modal
   const handleViewScholarship = (scholarship) => {
     setSelectedScholarship(scholarship);
+    setApplyMessage("");
   };
 
   // Close scholarship details modal
   const handleCloseModal = () => {
     setSelectedScholarship(null);
+    setApplyMessage("");
   };
 
   // Apply to a scholarship
-  const handleApply = () => {
-    if (!selectedScholarship) {
+  const handleApply = async () => {
+    if (!selectedScholarship) return;
+    if (!currentUser || !currentUser.email) {
+      setApplyMessage("Please log in as a student to apply.");
       return;
     }
 
-    const scholarshipId =
-      selectedScholarship._id || selectedScholarship.id;
+    const sId = String(selectedScholarship._id || selectedScholarship.id);
 
-    setAppliedScholarships((previous) => {
-      // If already applied, do nothing
-      if (previous.includes(scholarshipId)) {
-        return previous;
-      }
+    try {
+      setApplyLoading(true);
+      setApplyMessage("");
 
-      const updated = [...previous, scholarshipId];
+      await applyForScholarship({
+        studentEmail: currentUser.email,
+        studentName: currentUser.name || "Student",
+        scholarshipId: sId,
+        scholarshipTitle: selectedScholarship.title,
+        university: selectedScholarship.university,
+        country: selectedScholarship.country,
+        degree: selectedScholarship.degree,
+      });
 
-      // Save applied scholarship IDs in localStorage
-      localStorage.setItem(
-        "appliedScholarships",
-        JSON.stringify(updated)
-      );
-
-      return updated;
-    });
+      setAppliedIds((prev) => [...prev, sId]);
+      setApplyMessage("Application submitted successfully!");
+    } catch (err) {
+      setApplyMessage(err.message || "Failed to submit application.");
+    } finally {
+      setApplyLoading(false);
+    }
   };
 
-  // Check whether the currently selected scholarship is applied
-  const isApplied = selectedScholarship
-    ? appliedScholarships.includes(
-        selectedScholarship._id || selectedScholarship.id
-      )
-    : false;
+  const currentSelectedId = selectedScholarship
+    ? String(selectedScholarship._id || selectedScholarship.id)
+    : "";
+  const isApplied = appliedIds.includes(currentSelectedId);
 
   return (
     <div className="scholarship-page">
@@ -215,10 +236,16 @@ const Scholarship = () => {
                   : "modal-apply-button"
               }
               onClick={handleApply}
-              disabled={isApplied}
+              disabled={isApplied || applyLoading}
             >
-              {isApplied ? "Applied" : "Apply"}
+              {isApplied ? "Applied" : applyLoading ? "Submitting..." : "Apply"}
             </button>
+
+            {applyMessage && (
+              <p style={{ marginTop: "1rem", textAlign: "center", fontWeight: "bold", color: isApplied ? "#28a745" : "#d9534f" }}>
+                {applyMessage}
+              </p>
+            )}
           </div>
         </div>
       )}

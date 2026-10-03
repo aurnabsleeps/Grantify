@@ -128,3 +128,39 @@ export const deleteScholarship = async (id) => {
   }
   return data;
 };
+
+// Application APIs
+export const applyForScholarship = async (applicationData) => {
+  const response = await fetch(`${API_BASE_URL}/applications`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(applicationData),
+  });
+  const data = await response.json();
+  if (!response.ok || data.error) {
+    throw new Error(data.message || "Failed to submit application.");
+  }
+  return data;
+};
+
+export const getStudentApplications = async (email) => {
+  const response = await fetch(`${API_BASE_URL}/applications/student/${encodeURIComponent(email)}`);
+  const data = await response.json();
+  if (!response.ok || data.error) {
+    throw new Error(data.message || "Failed to fetch student applications.");
+  }
+  return data;
+};
+
+export const updateApplicationStatus = async (id, status) => {
+  const response = await fetch(`${API_BASE_URL}/applications/${id}/status`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status }),
+  });
+  const data = await response.json();
+  if (!response.ok || data.error) {
+    throw new Error(data.message || "Failed to update application status.");
+  }
+  return data;
+};

@@ -3,7 +3,7 @@ const Scholarship = require("../models/Scholarship");
 
 const router = express.Router();
 
-// GET /api/scholarships (with search & filter)
+
 router.get("/", async (req, res) => {
   try {
     const { search, country, degree } = req.query;

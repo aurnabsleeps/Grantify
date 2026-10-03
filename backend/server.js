@@ -5,6 +5,7 @@ const path = require("path");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const scholarshipRoutes = require("./routes/scholarshipRoutes");
+const applicationRoutes = require("./routes/applicationRoutes");
 const Scholarship = require("./models/Scholarship");
 
 dotenv.config({
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/scholarships", scholarshipRoutes);
+app.use("/api/applications", applicationRoutes);
 
 app.get("/", (req, res) => {
   res.send("Grantify Backend Server Running Successfully");
